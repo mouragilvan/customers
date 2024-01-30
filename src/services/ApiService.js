@@ -47,4 +47,31 @@ export default class ApiService {
         }
         return await req.json();
     }
+
+    async deleteCustomer(id) {
+        let req = null;
+        try {
+            req = await fetch("http://localhost:8080/customers/" + id, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!req.ok) {
+                if (req.status === 409) {
+                    return { "message": await req.text() };
+                }
+                if (req.status === 404) {
+                    return { "message": await req.text() };
+                }
+            }
+            if (req.status == 200) {
+                return { "successMessage": await req.text() };
+            }
+        } catch (e) {
+            console.log('Falha ao chamar a API', e);
+            return e;
+        }
+        return await req.json();
+
+    }
 }

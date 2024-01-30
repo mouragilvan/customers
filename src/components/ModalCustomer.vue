@@ -3,7 +3,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastro de cliente</h5>
+
+                    <h5 v-if="!customer.id" class="modal-title" id="exampleModalLabel">
+                        <img src="adicionar.png" class="btn-img" />
+                        Cadastro de cliente
+                    </h5>
+                    <h5 v-if="customer.id" class="modal-title" id="exampleModalLabel">
+                        <img src="editar.png" class="btn-img" />
+                        Edição de cliente
+                    </h5>
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -54,10 +63,13 @@ export default {
     mounted() {
         if (this.customer) {
             this.formCustomer = this.customer;
+
         }
     },
     updated() {
-
+        if (this.customer) {
+            this.formCustomer = this.customer;
+        }
     },
 
     methods: {
@@ -85,6 +97,26 @@ export default {
 <style scoped>
 .form-control:invalid {
     border: 1px solid red;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.ml-2 {
+    margin-left: 2px;
+}
+
+.mr {
+    margin-right: 7px;
+}
+
+.customer-icon {
+    width: 50px
+}
+
+.btn-img {
+    width: 30px;
 }
 </style>
   
