@@ -1,11 +1,19 @@
-# frontend
+## Instruções para rodar o projeto no Docker
+##### Enquanto eu crio o docker-compose.yml você pode rodar o projeto usando os passos a seguir
 
-## Project setup
+### Crie a imagem 
+##### Note que uso como nome da imagem o mesmo nome do projeto "customers"
 ```
-npm install
+docker build -t customers . 
 ```
 
-### Compiles and hot-reloads for development
+### Suba o container
+#### Note que estou usando a network criada lá no nosso backend Java (java-basic) que está aqui no nosso Gitub
 ```
-npm run serve
+docker run -p 8081:8080 -d --name=vue --network=basic customers
+```
+
+### Se tudo ocorreu conforme o esperado, pode acessar o projeto no endereço a seguir
+```
+http://localhost:8081/
 ```
