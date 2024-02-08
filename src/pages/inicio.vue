@@ -46,12 +46,13 @@
         </table>
 
     </div>
-    <ModalCustomer @save="createorUpdate" :errorMessage="errorMessage" :customer="customer" />
+    <ModalCustomer @save="createorUpdate" :errorMessages="errorMessages" :customer="customer" @reset="reset" />
 </template>
 
 <script>
 import ApiService from "../services/ApiService"
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import responseErrors from '../services/responseErrors';
 
 import html2pdf from 'html2pdf.js';
 
@@ -65,7 +66,7 @@ export default {
             modalId: "myModal",
             modalTitle: "Minha Modal",
             modal: null,
-            errorMessage: null,
+            errorMessages: null,
             successMessage: null,
             customer: {},
             isExport: false
@@ -100,14 +101,15 @@ export default {
                 response = await this.service.updateCustomer(customer);
             }
 
-            if (response.message) {
-                this.errorMessage = response.message;
-                return;
+            this.errorMessages = responseErrors(response);
+            if (!this.errorMessages) {
+                this.errorMessages = null;
+                this.customer = {}
+                this.successMessage = "Sucesso!";
+                this.setCustomers();
+                this.modal.hide();
             }
-            this.errorMessage = null;
-            this.successMessage = "Sucesso!";
-            this.setCustomers();
-            this.modal.hide();
+
         },
         async removeCustomer(id) {
 
@@ -140,7 +142,11 @@ export default {
                     pdf.save('tabela.pdf');
                     this.isExport = false;
                 });
+        },
+        reset() {
+            this.errorMessages = null;
         }
+
 
     }
 }

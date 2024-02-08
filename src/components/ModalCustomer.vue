@@ -13,11 +13,14 @@
                         Edição de cliente
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        @click="reset"></button>
                 </div>
                 <div class="modal-body">
-                    <div v-if="errorMessage !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{ errorMessage }}
+                    <div v-if="errorMessages !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <ul>
+                            <li v-for="e in errorMessages" :key="e">{{ e }}</li>
+                        </ul>
                     </div>
                     <div class="form-group">
                         <label for="nome"> Nome:</label>
@@ -36,7 +39,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="reset">Fechar</button>
                     <button type="button" class="btn btn-primary" @click="salvar">Salvar</button>
                 </div>
             </div>
@@ -48,7 +51,7 @@
 export default {
     props: {
         customer: Object,
-        errorMessage: String
+        errorMessages: Array
     },
     data() {
         return {
@@ -78,7 +81,9 @@ export default {
         },
         salvar() {
             this.$emit("save", this.formCustomer);
-
+        },
+        reset() {
+            this.$emit("reset");
         },
         resetItem() {
             this.formCustomer = {
